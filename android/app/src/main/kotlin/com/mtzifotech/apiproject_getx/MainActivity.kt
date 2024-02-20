@@ -1,0 +1,6 @@
+package com.mtzifotech.apiproject_getx
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
