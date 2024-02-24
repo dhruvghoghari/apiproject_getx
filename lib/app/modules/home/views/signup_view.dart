@@ -1,54 +1,58 @@
-import 'package:apiproject_getx/app/modules/home/views/login_view.dart';
+import 'package:apiproject_getx/app/modules/home/views/otp_view.dart';
+import 'package:apiproject_getx/app/utils/validation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/theme.dart';
-import '../../../widgets/submit_button.dart';
+import '../../../widgets/authbutton.dart';
 import '../controllers/auth_controller.dart';
+import 'login_view.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({Key? key}) : super(key: key);
-
   @override
   State<SignupView> createState() => _SignupViewState();
 }
 class _SignupViewState extends State<SignupView> {
+  String userDepartment="Company";
   @override
   Widget build(BuildContext context) {
-    AuthController authObj = Get.put(AuthController());
+    authController authObj = Get.put(authController());
     return Scaffold(
       appBar: AppBar(title: Text("Sign Up"),),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Form(
-              key: authObj.signupKey,
+            Obx(() => Form(
+              // key: authObj.signUpKey,
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: TextFormField(
+                      controller: authObj.name,
                       keyboardType: TextInputType.name,
                       decoration: AppTheme.customDecoration("Name", label: "Name"),
-                      validator: authObj.customNameValidation
+                       //validator:Validation.customNameValidation
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: TextFormField(
-                        controller: authObj.mobile,
-                        keyboardType: TextInputType.number,
-                        decoration: AppTheme.customDecoration("0123456789",label: "Mobile"),
-                        validator: authObj.customNumberValidation
+                      controller: authObj.mobile,
+                      keyboardType: TextInputType.number,
+                      decoration: AppTheme.customDecoration("0123456789",label: "Mobile"),
+                       //validator: authObj.customNumberValidation
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
-                        controller: authObj.email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: AppTheme.customDecoration("Enter email address",label: "Email Address",),
-                        // validator: authObj.customEmailValidation
+                      controller: authObj.email,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: AppTheme.customDecoration("Enter email address",label: "Email Address",),
+                       //validator: authObj.customEmailValidation
                     ),
                   ),
                   Padding(
@@ -70,7 +74,7 @@ class _SignupViewState extends State<SignupView> {
                           ),
                         ),
                       ),
-                      validator: authObj.customPasswordValidation,
+                       //validator: authObj.customPasswordValidation,
                     ),
                   ),
                   Padding(
@@ -92,13 +96,13 @@ class _SignupViewState extends State<SignupView> {
                           ),
                         ),
                       ),
-                      validator: authObj.customConfirmPasswordValidation,
+                       //validator: authObj.customConfirmPasswordValidation,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButtonFormField<String>(
-                      value: authObj.userDepartment.value,
+                      value:userDepartment,
                       onChanged: (String? newValue) {
                         if (newValue != null) {
                           authObj.role = newValue;
@@ -108,7 +112,6 @@ class _SignupViewState extends State<SignupView> {
                           .map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-
                           child: Text(
                             value.isNotEmpty ? value : 'Select Type',
                             style: const TextStyle(color: Colors.grey),
@@ -116,35 +119,37 @@ class _SignupViewState extends State<SignupView> {
                         );
                       }).toList(),
                       decoration: AppTheme.customDecoration("Select Type"),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a Type';
-                        }
-                        return null;
-                      },
+                      // validator: authObj.customRoleValidation
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  submitBtn(
+                  authBtn(
                       onClick: () async{
-                        if (authObj.signupKey.currentState?.validate() ?? false) {}
-                        authObj.singupLogin();
-                        await authObj.singupLogin();
+                        // if (authObj.signUpKey.currentState?.validate() ?? false) {}
+                        await authObj.signUpLogin().then((value) {
+                          if(authObj.isLogin==true)
+                          {
+                            AppTheme.customSnackBar(authObj);
+                          }
+                          else
+                          {
+                            AppTheme.customSnackBar(authObj);
+                          }
 
-                        if(authObj.isLogin==true)
-                        {
-                          var snackbar = SnackBar(content: Text(authObj.isSuccess.toString()));
-                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        }
-                        else
-                        {
-                          var snackbar = SnackBar(content: Text(authObj.isSuccess.toString()));
-                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        }
+                          authObj.name.clear();
+                          authObj.mobile.clear();
+                          authObj.email.clear();
+                          authObj.password.clear();
+                          authObj.confirmPassword.clear();
+                          userDepartment="";
+                          Get.to(OtpView());
+
+                        });
+
+
 
                       },btnText: "SignUp"),
                   SizedBox(height: 20.0),
-
                   RichText(
                     text: TextSpan(
                       text: 'Already Have Account?',
@@ -157,10 +162,12 @@ class _SignupViewState extends State<SignupView> {
                           text: 'Login',
                           style: TextStyle(
                             color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                            Get.to(LoginView());
+                              Get.to(loginView());
                             },
                         ),
                       ],
@@ -169,7 +176,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 20),
                 ],
               ),
-            ),
+            ),)
           ],
         ),
       ),

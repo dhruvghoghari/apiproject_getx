@@ -1,4 +1,4 @@
-class Usersignupdata {
+class UserSignupData {
   String? name;
   String? email;
   String? mobile;
@@ -6,7 +6,7 @@ class Usersignupdata {
   String? confirmPassword;
   String? role;
 
-  Usersignupdata(
+  UserSignupData(
       {this.name,
         this.email,
         this.mobile,
@@ -14,7 +14,7 @@ class Usersignupdata {
         this.confirmPassword,
         this.role});
 
-  Usersignupdata.fromJson(Map<String, dynamic> json) {
+  UserSignupData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
     mobile = json['mobile'];

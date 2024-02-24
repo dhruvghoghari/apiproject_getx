@@ -1,12 +1,12 @@
-class Userlogindata {
+class UserLoginData {
   String? message;
   Payload? payload;
   int? statusCode;
   bool? isSuccess;
 
-  Userlogindata({this.message, this.payload, this.statusCode, this.isSuccess});
+  UserLoginData({this.message, this.payload, this.statusCode, this.isSuccess});
 
-  Userlogindata.fromJson(Map<String, dynamic> json) {
+  UserLoginData.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     payload =
     json['payload'] != null ? new Payload.fromJson(json['payload']) : null;
@@ -164,13 +164,13 @@ class User {
   }
 }
 
-class Userinputlogin {
+class UserInputLogin {
   String? mobile;
   String? password;
 
-  Userinputlogin({this.mobile, this.password});
+  UserInputLogin({this.mobile, this.password});
 
-  Userinputlogin.fromJson(Map<String, dynamic> json) {
+  UserInputLogin.fromJson(Map<String, dynamic> json) {
     mobile = json['mobile'];
     password = json['password'];
   }

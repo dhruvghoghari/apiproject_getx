@@ -1,16 +1,22 @@
+import 'package:apiproject_getx/app/modules/home/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class AppTheme
 {
-
+  authController authObj = Get.put(authController());
   static const loginBtnColor = Colors.black;
   static const borderColor = Colors.grey;
+
+
+
 
   static InputDecoration customDecoration(String hintText, {String? label}) {
     return InputDecoration(
       labelText: label,
       alignLabelWithHint: true,
-      labelStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black),
+      labelStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
       hintText: hintText,
       fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 16.0),
@@ -36,5 +42,39 @@ class AppTheme
       hintStyle: const TextStyle(color: Colors.grey),
     );
   }
+
+  static customSnackBar(authController authObj) {
+    return Get.snackbar(
+      "User Login",
+      authObj.isSuccess.toString(),
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.black,
+      colorText: Colors.white,
+      duration: Duration(seconds: 3),
+      isDismissible: true,
+    );
+  }
+
+  static InputDecoration homeDecoration() {
+    return InputDecoration(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.grey,
+        ),
+        borderRadius: BorderRadius.circular(30),
+      ),
+    );
+  }
+
+  static customToast(String message) {
+    Get.snackbar('Toast',
+      message,
+      backgroundColor: Colors.black,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.BOTTOM,
+      duration: Duration(seconds: 3),
+    );
+  }
+
 
 }
