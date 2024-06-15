@@ -1,20 +1,19 @@
 import 'dart:io';
+import 'package:apiproject_getx/app/modules/home/controllers/auth_controller.dart';
 import 'package:apiproject_getx/app/widgets/authbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import '../../../utils/theme.dart';
-import '../controllers/auth_controller.dart';
+import '../../../../utils/theme.dart';
 
-class AddExperience extends StatefulWidget {
-  const AddExperience({super.key});
+class UpdateExperience extends StatefulWidget {
+  const UpdateExperience({super.key});
   @override
-  State<AddExperience> createState() => _AddExperienceState();
+  State<UpdateExperience> createState() => _UpdateExperienceState();
 }
 
-class _AddExperienceState extends State<AddExperience> {
+class _UpdateExperienceState extends State<UpdateExperience> {
   authController authObj = Get.put(authController());
 
 
@@ -25,7 +24,7 @@ class _AddExperienceState extends State<AddExperience> {
     profileUrl = newUrl;
   }
 
-   final addKey = GlobalKey<FormState>();
+  final addKey = GlobalKey<FormState>();
 
   DateTime? selectedDate;
 
@@ -99,12 +98,6 @@ class _AddExperienceState extends State<AddExperience> {
                         controller:authObj.title,
                         keyboardType: TextInputType.text,
                         decoration: AppTheme.customDecoration("title"),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter your title';
-                        //   }
-                        //   return null;
-                        // },
                       ),
                     ),
                     Padding(
@@ -113,12 +106,6 @@ class _AddExperienceState extends State<AddExperience> {
                         controller: authObj.company,
                         keyboardType: TextInputType.text,
                         decoration: AppTheme.customDecoration("Company"),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Enter Company';
-                        //   }
-                        //   return null;
-                        // },
                       ),
                     ),
                     Padding(
@@ -126,12 +113,6 @@ class _AddExperienceState extends State<AddExperience> {
                       child: TextFormField(
                         controller: authObj.startDate,
                         decoration: AppTheme.customDecoration("Start date"),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter the start date';
-                        //   }
-                        //   return null;
-                        // },
                         onTap: () async {
                           await _selectedDate(context);
                         },
@@ -140,17 +121,8 @@ class _AddExperienceState extends State<AddExperience> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller:authObj. endDate,
+                        controller: authObj.endDate,
                         decoration: AppTheme.customDecoration("End date"),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter the End date';
-                        //   }
-                        //   return null;
-                        // },
-                        // onTap: () async {
-                        //   await authObj._lastDate(context);
-                        // },
                       ),
                     ),
                     Padding(
@@ -158,12 +130,6 @@ class _AddExperienceState extends State<AddExperience> {
                       child: TextFormField(
                         controller: authObj.description,
                         decoration: AppTheme.customDecoration("Description"),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter the start date';
-                        //   }
-                        //   return null;
-                        // },
                       ),
                     ),
                     SizedBox(height: 30),
@@ -171,27 +137,12 @@ class _AddExperienceState extends State<AddExperience> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         authBtn(
-                          btnText: "Save",
+                          btnText: "Update",
                           onClick: () async{
                             // if (addKey.currentState?.validate() ?? false) {
                             //   AppTheme.customToast("Add required Field");
                             // }
-                            await authObj.insertUSer();
-                            if(authObj.isinsert==true)
-                              {
-                                print("added");
-                              }
-                            else
-                              {
-                                print("error");
-                              }
-
                           },
-                        ),
-                        authBtn(btnText: "Cancel",
-                            onClick: (){
-
-                            }
                         ),
                       ],
                     )

@@ -1,19 +1,27 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:apiproject_getx/app/models/user_list.dart';
-import 'package:apiproject_getx/app/modules/home/views/home_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../helpers/ApiHandler.dart';
 import '../../../helpers/ErrorHandler.dart';
-import '../../../models/user_all_experience.dart';
-import '../../../models/user_experince.dart';
+import '../../../models/experience/user_all_experience.dart';
+import '../../../models/experience/user_experince.dart';
 import '../../../models/user_login_data.dart';
 import '../../../models/user_signup_data.dart';
+import '../../../models/testimonial/user_testimonial.dart';
 import '../../../resources/Url_Resources.dart';
+import '../views/home_view.dart';
 
 class authController extends GetxController {
+  TextEditingController TestiName = TextEditingController();
+  TextEditingController projectTitle = TextEditingController();
+  TextEditingController projectDescription = TextEditingController();
+  TextEditingController position = TextEditingController();
 
   TextEditingController title = TextEditingController();
   TextEditingController company = TextEditingController();
@@ -27,6 +35,8 @@ class authController extends GetxController {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   String role = '';
+  final List<File> selectedImages = [];
+
 
   final signInKey = GlobalKey<FormState>();
 
@@ -250,16 +260,14 @@ class authController extends GetxController {
 
 
   ExperienceResponseModel allExperience = ExperienceResponseModel();
-
   void getExperience() async {
     try {
       var headers = {
         'Authorization':
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcwODYwMDc5NSwiZXhwIjoxNzA5MjA1NTk1fQ.Sj6AfMuK6nUde94MkeTQpT2Zmg0TUa73nmer5_JGKc0'
       };
-      var data = await ApiHandler.experienceData(
-          UrlResources.get_Experience, headers);
-      print(data);
+      var data = await ApiHandler.experienceData(UrlResources.get_Experience, headers);
+      // print(data);
       allExperience = data;
     } on ErrorHandler catch (ex) {
       if (ex.message == "Bad Response Format") {}
@@ -268,7 +276,6 @@ class authController extends GetxController {
 
 
   ExperienceModel getMainExperience = ExperienceModel();
-
   void getAllExperience() async {
     try {
       var headers = {
@@ -276,7 +283,7 @@ class authController extends GetxController {
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcwODYwMDc5NSwiZXhwIjoxNzA5MjA1NTk1fQ.Sj6AfMuK6nUde94MkeTQpT2Zmg0TUa73nmer5_JGKc0'
       };
       var data = await ApiHandler.experienceMainData(UrlResources.getall_Experience,headers);
-      print(data);
+      // print(data);
       getMainExperience = data;
     } on ErrorHandler catch (ex) {
       if (ex.message == "Bad Response Format") {}
@@ -284,15 +291,16 @@ class authController extends GetxController {
   }
 
 
-  RxBool isinsert=false.obs;
+
+  RxBool isInsert=false.obs;
   RxString message="".obs;
   insertUSer() async {
     var params =
     {
       "title":title.text.toString(),
       "company":company.text.toString(),
-      "startdate":startDate.text.toString(),
-      "enddate":endDate.text.toString(),
+      "startDate":startDate.text.toString(),
+      "endDate":endDate.text.toString(),
       "description":description.text.toString(),
     };
     var headers = {
@@ -300,17 +308,17 @@ class authController extends GetxController {
     };
     try
     {
-      await ApiHandler.postRequest(UrlResources.add_Experience,body: params,headers: headers).then((json){
-        if(json["isSuccess"]=="true")
+      await ApiHandler.postRequest(UrlResources.add_Experience,body: params,headers: headers).then((obj){
+        if(obj["isSuccess"]=="true")
         {
-          message(json["message"].toString());
-          isinsert(true);
+          message(obj["message"].toString());
+          isInsert(true);
           Get.to(HomeView());
         }
         else
         {
-          message(json["message"].toString());
-          isinsert(false);
+          message(obj["message"].toString());
+          isInsert(false);
         }
       });
     }
@@ -320,5 +328,30 @@ class authController extends GetxController {
       }
 
     }
+    title.clear();
+    company.clear();
+    startDate.clear();
+    endDate.clear();
+    description.clear();
   }
+
+
+  TestimonialModel allTestimonial= TestimonialModel();
+  void getTestimonial() async {
+    try {
+      var headers = {
+        'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcwODYwMDc5NSwiZXhwIjoxNzA5MjA1NTk1fQ.Sj6AfMuK6nUde94MkeTQpT2Zmg0TUa73nmer5_JGKc0'
+      };
+      var data = await ApiHandler.TestimonialData(UrlResources.add_Testimonial, headers);
+      print(data);
+      allTestimonial = data;
+    } on ErrorHandler catch (ex) {
+      if (ex.message == "Bad Response Format") {}
+    }
+  }
+
+
+
+
 }

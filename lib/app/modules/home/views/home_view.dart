@@ -1,12 +1,13 @@
 import 'package:apiproject_getx/app/modules/home/views/About_view.dart';
-import 'package:apiproject_getx/app/modules/home/views/experince_view.dart';
+import 'package:apiproject_getx/app/modules/home/views/experience/view_experience.dart';
 import 'package:apiproject_getx/app/modules/home/views/posts_view.dart';
+import 'package:apiproject_getx/app/modules/home/views/testimonlals/view_testimonlals.dart';
 import 'package:apiproject_getx/app/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:apiproject_getx/app/modules/home/controllers/auth_controller.dart';
 
-import 'add_experince_view.dart';
+import 'experience/add_experince_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -19,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
   authController authObj = Get.put(authController());
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.black,
@@ -107,9 +108,10 @@ class _HomeViewState extends State<HomeView> {
                     fontSize: 30
                   ),),
                   Text(homeText,textAlign: TextAlign.center,),
-
                   Container(
                     child: TabBar(
+                      isScrollable: true,
+                      dividerColor: Colors.grey,
                       labelColor: Colors.black,
                       indicatorColor: Colors.black,
                       unselectedLabelColor: Colors.grey,
@@ -117,6 +119,7 @@ class _HomeViewState extends State<HomeView> {
                         Tab(text: "Posts"),
                         Tab(text: "About"),
                         Tab(text: "Experience"),
+                        Tab(text: "Testimonlals"),
                       ],
                     ),
                   ),
@@ -132,6 +135,9 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           Container(
                             child: ExperienceView(),
+                          ),
+                          Container(
+                            child: TestimonialView(),
                           )
                         ],
                       ),

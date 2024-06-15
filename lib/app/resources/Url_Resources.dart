@@ -11,5 +11,8 @@ class UrlResources
   static String getall_Experience = BASE_URL + "user/experience";
   static String add_Experience = BASE_URL + "user/experience";
 
+  static String add_Testimonial = BASE_URL + "user/testimonial";
+
+
 
 }
